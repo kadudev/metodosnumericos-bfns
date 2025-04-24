@@ -1,13 +1,13 @@
-#include <iostream> //biblioteca padr„o do c++
-#include <locale> //para uso da codificaÁ„o em portugÍs
-#include <cmath> //para uso da matem·tica mais "avanÁada no cÛd"
-#include <iomanip> //para manipulaÁ„o de casas decimais
+#include <iostream> //biblioteca padr√£o do c++
+#include <locale> //para uso da codifica√ß√£o em portug√™s
+#include <cmath> //para uso da matem√°tica no c√≥d
+#include <iomanip> //para manipula√ß√£o de casas decimais
 #include <vector> //para uso de vetores para armazenamento de erros
 #include <fstream> //para salvar erros em arquivo
 
  using namespace std;
 
- //funÁ„o f(x) = x^2 -1
+ //fun√ß√£o f(x) = x^2 -1
  double func(double x){
     return x*x -1;
  }
@@ -16,12 +16,12 @@
     return 2*x;
  }
 
- //bisseÁ„o
+ //bisse√ß√£o
  double BissecaoMetodo(double xl, double xu, double eps, vector<double>& ErrosBissecao){
     
     if(func(xl)*func(xu) >=0){
-        //se os limites do intervalo forem maior ou igual a zero, n„o h· troca de sinais, e portanto a raiz n„o est· nesse intervalo
-        cout<<"Intervalo inv·lido. f(xl) * f(xu) deve ser menor que zero."<<endl;
+        //se os limites do intervalo forem maior ou igual a zero, n√£o h√° troca de sinais, e portanto a raiz n√£o est√° nesse intervalo
+        cout<<"Intervalo inv√°lido. f(xl) * f(xu) deve ser menor que zero para haver troca de sinais."<<endl;
         return NAN; 
     } 
 
@@ -33,29 +33,29 @@
         xr = (xl+xu)/2.0; 
         erro = fabs(func(xr)); //erro = |f(xr)|
 
-        ErrosBissecao.push_back(erro); //salva o erro de cada iteraÁ„o
-        //imprimir a iteraÁ„o e o erro atual
-        cout<<"IteraÁ„o "<<iteracao<<": xr = "<<xr<<", f(xr) = "<<func(xr)<<", erro = "<<erro<<endl;
+        ErrosBissecao.push_back(erro); //salva o erro de cada itera√ß√£o
+        //imprimir a itera√ß√£o e o erro atual
+        cout<<"Itera√ß√£o "<<iteracao<<": xr = "<<xr<<", f(xr) = "<<func(xr)<<", erro = "<<erro<<endl;
 
         //decide em qual lado do intervalo continua
         if(func(xr)*func(xl)<0){
-            xu = xr; //o novo limite superior È o xr
+            xu = xr; //o novo limite superior √© o xr
         }
         else{
             xl = xr;
         }
 
-        iteracao++; //incrementa o numero de iteraÁıes
+        iteracao++; //incrementa o numero de itera√ß√µes
 
     }while (erro > eps);
     return xr; //retorna a raiz aproximada
  }
 
-//falsa posiÁ„o
+//falsa posi√ß√£o
 double FalsaPosicaoMetodo(double xl, double xu, double eps, vector<double>& ErrosFalsaPosicao){
     if(func(xl)*func(xu) >=0){
-        //segue a mesma regra dos limites da bisseÁ„o
-        cout<<"Intervalo inv·lido. xl * xu devem ser menor que zero."<<endl;
+        //segue a mesma regra dos limites da bisse√ß√£o
+        cout<<"Intervalo inv√°lido. f(xl) * f(xu) devem ser menor que zero para haver troca de sinais."<<endl;
         return NAN; 
     } 
 
@@ -64,14 +64,14 @@ double FalsaPosicaoMetodo(double xl, double xu, double eps, vector<double>& Erro
     int iteracao = 1;
 
     do {
-        //c·lculo do xr
+        //c√°lculo do xr
         xr = xu - (func(xu) * (xl - xu)) / (func(xl) - func(xu));
         erro = fabs(func(xr)); // |f(xr)|
-        ErrosFalsaPosicao.push_back(erro); //salva o erro de cada iteraÁ„o
+        ErrosFalsaPosicao.push_back(erro); //salva o erro de cada itera√ß√£o
 
-        cout << "IteraÁ„o " << iteracao << ": xr = " << xr << ", f(xr) = " << func(xr) << ", erro = " << erro << endl;
+        cout << "Itera√ß√£o " << iteracao << ": xr = " << xr << ", f(xr) = " << func(xr) << ", erro = " << erro << endl;
 
-        //atualiza os limites com base no sinal, da mesma forma que na bisseÁ„o
+        //atualiza os limites com base no sinal, da mesma forma que na bisse√ß√£o
         if (func(xr) * func(xl) < 0) {
             xu = xr;
         } else {
@@ -85,21 +85,21 @@ double FalsaPosicaoMetodo(double xl, double xu, double eps, vector<double>& Erro
     return xr;
 }
 
-//MÈtodo de Newton
+//M√©todo de Newton
 double NewtonMetodo(double x0, double eps, vector<double>& ErrosNewton){
     double xi, erro;
     int iteracao = 1;
     do {
         if (funcder(x0) == 0) {
-            cout << "Derivada È zero. MÈtodo de Newton falhou." << endl;
+            cout << "Derivada √© zero. M√©todo de Newton falhou." << endl;
             return NAN;
         }
 
-        xi = x0 - func(x0) / funcder(x0);
+        xi = x0 - func(x0) / funcder(x0);  //xi+1 = xi - f(xi)/f'(xi)
         erro = abs(xi - x0);
         x0 = xi;
-        ErrosNewton.push_back(erro); //salva o erro de cada iteraÁ„o
-        cout << "IteraÁ„o " << iteracao << ": x"<<iteracao<<"= " << xi << ", f(x"<<iteracao<<") = " << func(xi) << ", erro = " << erro << endl;
+        ErrosNewton.push_back(erro); //salva o erro de cada itera√ß√£o
+        cout << "Itera√ß√£o " << iteracao << ": x"<<iteracao<<"= " << xi << ", f(x"<<iteracao<<") = " << func(xi) << ", erro = " << erro << endl;
         iteracao++;
 
     } while (erro > eps);
@@ -107,23 +107,23 @@ double NewtonMetodo(double x0, double eps, vector<double>& ErrosNewton){
     return xi;
 }
 
-//mÈtodo da secante
+//m√©todo da secante
 double SecanteMetodo(double x0, double x1, double eps, vector<double>& ErrosSecante){
     double x2, erro;
     int iteracao=1;
     cout<<"x0 = "<<x0<<", x1 = "<<x1<<endl;
     do{
         if(func(x1)-func(x0)==0){
-            cout<<"Divis„o por zero na secante"<<endl; //se f(x1) - f(x0) for zero, a divis„o vai ser por zero
+            cout<<"Divis√£o por zero na secante"<<endl; //se f(x1) - f(x0) for zero, a divis√£o vai ser por zero
             return NAN;
         }
 
-        x2=x1- func(x1)*(x1-x0) /(func(x1)-func(x0));
+        x2=x1- func(x1)*(x1-x0) /(func(x1)-func(x0)); //formula da secante
         erro = abs(x2-x1);
         x0=x1;
         x1=x2;
-        ErrosSecante.push_back(erro); //salva o erro de cada iteraÁ„o
-        cout << "IteraÁ„o " << iteracao 
+        ErrosSecante.push_back(erro); //salva o erro de cada itera√ß√£o
+        cout << "Itera√ß√£o " << iteracao 
         << ": x"<<iteracao<<" = " << x2 
         << ", f(x"<<iteracao<<") = " << func(x2) 
         << ", erro = " << erro << endl;
@@ -134,7 +134,7 @@ double SecanteMetodo(double x0, double x1, double eps, vector<double>& ErrosSeca
 }
 
 void SalvarErrosCSV(const vector<double>& Bissecao, const vector<double>& FalsaPosicao, const vector<double>& Newton, const vector<double>& Secante) {
-    //essa È uma funÁ„o para salvar os erros em um arquivo de planilha, n„o faz parte da parte de c·lculo dos mÈtodos numÈricos
+    //essa √© uma fun√ß√£o para salvar os erros em um arquivo de planilha, n√£o faz parte da parte de c√°lculo dos m√©todos num√©ricos
     ofstream arquivo("ErrosMetodos.csv");
     arquivo << "Iteracao,Bissecao,FalsaPosicao,Newton,Secante\n";
 
@@ -158,37 +158,37 @@ void SalvarErrosCSV(const vector<double>& Bissecao, const vector<double>& FalsaP
  int main()
  {
     setlocale(LC_ALL, "Portuguese");
-    cout<<"FunÁ„o utilizada para desenvolvimento dos mÈtodos: f(x) = x≤ -1"<<endl;
+    cout<<"Fun√ß√£o utilizada para desenvolvimento dos m√©todos: f(x) = x¬≤ -1"<<endl;
 
-    //declaraÁ„oo de vari·veis para mÈtodo da bisseÁ„o e falsa posiÁ„o
+    //declara√ß√£oo de vari√°veis para m√©todo da bisse√ß√£o e falsa posi√ß√£o
     double xl = 0.0, xu = 2.0; //intervalo inicial [xl, xu]
-    double eps = 1e-8; //precis„o eps = 10^-8
-    double x0=0.5; //chute inicial para o mÈtodo de Newton e secante
-    double x1=2.0; //segundo chute para o mÈtodo da secante
+    double eps = 1e-8; //precis√£o eps = 10^-8
+    double x0=0.5; //chute inicial para o m√©todo de Newton e secante
+    double x1=2.0; //segundo chute para o m√©todo da secante
     vector<double> ErrosBissecao; //vetor para guardar erros
     vector<double> ErrosFalsaPosicao; //vetor para guardar erros
     vector<double> ErrosNewton; //vetor para guardar erros
     vector<double> ErrosSecante; //vetor para guardar erros
 
-    cout<<"---MÈtodo da bisseÁ„o---"<<endl<<"------------------------------------------------------"<<endl;
+    cout<<"---M√©todo da bisse√ß√£o---"<<endl<<"------------------------------------------------------"<<endl;
     double raizBissecao = BissecaoMetodo(xl, xu, eps, ErrosBissecao);
-    cout << fixed << setprecision(12); //imprime valor com precis„o de 12 casas decimais, para valor mais preciso
-    cout<<"Raiz aproximada encontrada (mÈtodo da bisseÁ„o): "<<raizBissecao<<endl<<"------------------------------------------------------"<<endl<<endl;
+    cout << fixed << setprecision(12); //imprime valor com precis√£o de 12 casas decimais, para valor mais preciso
+    cout<<"Raiz aproximada encontrada (m√©todo da bisse√ß√£o): "<<raizBissecao<<endl<<"------------------------------------------------------"<<endl<<endl;
 
-    cout<<"---MÈtodo da falsa posiÁ„o---"<<endl<<"------------------------------------------------------"<<endl;
+    cout<<"---M√©todo da falsa posi√ß√£o---"<<endl<<"------------------------------------------------------"<<endl;
     double raizFalsaPosicao = FalsaPosicaoMetodo(xl, xu, eps, ErrosFalsaPosicao);
-    cout << fixed << setprecision(12); //imprime valor com precis„o de 12 casas decimais, para valor mais preciso
-    cout<<"Raiz aproximada encontrada (mÈtodo da falsa posiÁ„o): "<<raizFalsaPosicao<<endl<<"------------------------------------------------------"<<endl<<endl;
+    cout << fixed << setprecision(12); //imprime valor com precis√£o de 12 casas decimais, para valor mais preciso
+    cout<<"Raiz aproximada encontrada (m√©todo da falsa posi√ß√£o): "<<raizFalsaPosicao<<endl<<"------------------------------------------------------"<<endl<<endl;
 
-    cout<<"---MÈtodo de Newton---"<<endl<<"------------------------------------------------------"<<endl;
+    cout<<"---M√©todo de Newton---"<<endl<<"------------------------------------------------------"<<endl;
     double raizNewton = NewtonMetodo(x0, eps, ErrosNewton);
-    cout << fixed << setprecision(12); //imprime valor com precis„o de 12 casas decimais, para valor mais preciso
-    cout<<"Raiz aproximada encontrada (mÈtodo de Newton): "<<raizNewton<<endl<<"------------------------------------------------------"<<endl<<endl;
+    cout << fixed << setprecision(12); //imprime valor com precis√£o de 12 casas decimais, para valor mais preciso
+    cout<<"Raiz aproximada encontrada (m√©todo de Newton): "<<raizNewton<<endl<<"------------------------------------------------------"<<endl<<endl;
 
-    cout<<"---MÈtodo da secante---"<<endl<<"------------------------------------------------------"<<endl;
+    cout<<"---M√©todo da secante---"<<endl<<"------------------------------------------------------"<<endl;
     double raizSecante = SecanteMetodo(x0, x1, eps, ErrosSecante);
-    cout << fixed << setprecision(12); //imprime valor com precis„o de 12 casas decimais, para valor mais preciso
-    cout<<"Raiz aproximada encontrada (mÈtodo da secante): "<<raizSecante<<endl<<"------------------------------------------------------"<<endl<<endl;
+    cout << fixed << setprecision(12); //imprime valor com precis√£o de 12 casas decimais, para valor mais preciso
+    cout<<"Raiz aproximada encontrada (m√©todo da secante): "<<raizSecante<<endl<<"------------------------------------------------------"<<endl<<endl;
 
     SalvarErrosCSV(ErrosBissecao, ErrosFalsaPosicao, ErrosNewton, ErrosSecante);
     return 0;
